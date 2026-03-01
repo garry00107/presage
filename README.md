@@ -12,6 +12,14 @@
   <sub>A novel memory architecture that predicts what context an LLM will need next — and pre-stages it before the question arrives.</sub>
 </p>
 
+</p>
+
+---
+
+<p align="center">
+  <img src="demo.gif" alt="Presage Demo Terminal GIF" width="800">
+</p>
+
 ---
 
 Every memory system for LLMs works the same way: the user asks something, the system retrieves relevant context, the LLM responds. Retrieve, then respond.
