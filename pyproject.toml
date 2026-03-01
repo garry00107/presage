@@ -1,6 +1,3 @@
-# NOTE: Save as pyproject.toml in project root (no .py extension)
-
-PYPROJECT_CONTENT = """
 [build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.backends.legacy:build"
@@ -82,5 +79,4 @@ ignore = ["E501", "N803", "N806"]
 python_version = "3.12"
 ignore_missing_imports = true
 strict = false
-"""
 
