@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/config/settings.py
+# hypothesis_version: 6.151.9
+
+[0.1, 0.3, 0.4, 0.5, 0.6, 0.8, 0.85, 0.9, 0.95, 2.0, 5.0, 120.0, 1536, 4096, 9090, './ppm_data/kuzu', './ppm_data/ppm.db', './ppm_data/qdrant', '.env', 'ANTHROPIC_API_KEY', 'INFO', 'OPENAI_API_KEY', 'PPM_', 'anthropic', 'bge', 'nomic', 'ollama', 'openai']

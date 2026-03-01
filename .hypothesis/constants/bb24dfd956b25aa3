@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/math_core/momentum.py
+# hypothesis_version: 6.151.9
+
+[1e-10, 0.3, 0.85, 0.9]

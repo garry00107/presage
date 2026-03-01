@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/staging/prefetcher.py
+# hypothesis_version: 6.151.9
+
+[0.0, 0.1, 1.0, 1000, 'chunk_id', 'chunk_index', 'content', 'id', 'memory_id', 'parent_id', 'prefetcher.fetched', 'prose', 'score', 'source', 'source_type', 'tokens', 'weight']

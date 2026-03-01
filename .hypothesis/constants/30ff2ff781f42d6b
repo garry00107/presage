@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/store/vector.py
+# hypothesis_version: 6.151.9
+
+[1536, 'chunk_index', 'content', 'embedding', 'id', 'parent_id', 'ppm_chunks', 'prose', 'score', 'source_type', 'tokens']

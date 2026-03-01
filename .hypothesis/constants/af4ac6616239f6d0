@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/api/server.py
+# hypothesis_version: 6.151.9
+
+[0.0, 1000.0, 200, 404, 500, '*', '...', '/metrics', '/v1/health', '/v1/ingest', '/v1/memory/search', '/v1/session', '/v1/stats', '/v1/turn', '0.1.0', 'NOVEL', 'SELECT 1', 'Session not found', 'chunks', 'closed', 'content', 'degraded', 'embedding', 'factory', 'forward_contexts', 'graph_edges', 'id', 'numpy', 'ok', 'parent_id', 'ppm_server.starting', 'prose', 'qdrant', 'score', 'session_id', 'slots', 'source', 'source_type', 'sqlite', 'status', 'token_count', 'tokens', 'total_samples', 'written']

@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/write/distiller.py
+# hypothesis_version: 6.151.9
+
+[0.4, 0.6, 1.0, 1024, 2000, '```(?:json)?|```', '```(\\w*)\\n(.*?)```', 'anthropic', 'code', 'content', 'forward_contexts', 'gpt-4o-mini', 'intent:IMPLEMENT', 'json_object', 'memories', 'prose', 'role', 'source_type', 'type', 'type:code', 'user', 'worth_storing', '{}']

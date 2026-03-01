@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/staging/cache.py
+# hypothesis_version: 6.151.9
+
+['confidence', 'empty', 'expired', 'ready', 'rerank_score', 'slot', 'status', 'strategy', 'tier', 'tokens']

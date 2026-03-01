@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/observability/tracing.py
+# hypothesis_version: 6.151.9
+
+['0.1.0', 'PPM_OTEL_ENDPOINT', 'ppm', 'service.name', 'service.version', 'set_attribute']

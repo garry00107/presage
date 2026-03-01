@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/store/outbox_worker.py
+# hypothesis_version: 6.151.9
+
+[0.1, 2.0, 'DEAD', 'DELETE_NODE', 'DELETE_VECTOR', 'DONE', 'IN_FLIGHT', 'PENDING', 'UPSERT_EDGE', 'UPSERT_VECTOR', 'attempts', 'chunk_id', 'content', 'id', 'memory_id', 'operation', 'parent_id', 'payload', 'prose', 'source_type', 'tokens', 'vector']

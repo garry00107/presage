@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/nerve/models.py
+# hypothesis_version: 6.151.9
+
+['ANNOTATE', 'COMPARE', 'DEBUG', 'EXPLORE', 'GRAPH', 'HYBRID', 'IMPLEMENT', 'NAVIGATE', 'REFLECT', 'SEMANTIC', 'SYMBOL', 'UNKNOWN']

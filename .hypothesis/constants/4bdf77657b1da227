@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/feedback/detector.py
+# hypothesis_version: 6.151.9
+
+[0.0, 0.15, 0.75, 0.8, '[^\\w\\s]', 'miss', 'overlap', 'prevented', 'semantic', 'unknown']

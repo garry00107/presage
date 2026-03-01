@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/math_core/knapsack.py
+# hypothesis_version: 6.151.9
+
+[0.0, 'chunk_index', 'id', 'parent_id', 'score', 'tokens']

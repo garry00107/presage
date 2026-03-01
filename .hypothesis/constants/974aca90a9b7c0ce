@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/session/manager.py
+# hypothesis_version: 6.151.9
+
+[0.0, 1000, 'session.close_error', 'session.closed', 'session.turn_start']

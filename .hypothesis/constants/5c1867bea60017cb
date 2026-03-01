@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/feedback/dataset.py
+# hypothesis_version: 6.151.9
+
+[0.0, 100, 'C_t', 'M_hat', 'acceleration', 'avg_hits', 'by_intent', 'confidence', 'count', 'hit_memory_ids', 'hit_strategies', 'intent', 'k_steps', 'lambda_eff', 'miss_memory_ids', 'miss_strategies', 'n', 'predictions', 'session_id', 'sessions', 'slot_index', 'strategy', 'switch_score', 'total_samples', 'total_sessions', 'turn_index', 'velocity', 'w']

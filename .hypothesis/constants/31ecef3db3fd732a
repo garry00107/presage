@@ -1,0 +1,4 @@
+# file: /Users/garrry/Downloads/memory/core/write/chunker.py
+# hypothesis_version: 6.151.9
+
+[0.0, 150, 300, '^#{1,3}\\s+.+', '^(\\w[\\w\\-]*)\\s*:', 'chunk_index', 'code', 'content', 'embedding', 'id', 'json', 'md', 'parent_id', 'prose', 'score', 'source_type', 'tokens', 'yaml']

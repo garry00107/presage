@@ -1,0 +1,57 @@
+# NOTE: Save as docker/docker-compose.yml (no .py extension)
+
+DOCKER_COMPOSE_CONTENT = """
+version: '3.9'
+
+services:
+  ppm:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    ports:
+      - "8000:8000"    # REST API
+      - "9090:9090"    # Prometheus metrics
+    volumes:
+      - ppm_data:/data/ppm
+    env_file:
+      - .env
+    environment:
+      - PPM_SQLITE_PATH=/data/ppm/ppm.db
+      - PPM_QDRANT_PATH=/data/ppm/qdrant
+      - PPM_LOG_LEVEL=INFO
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  prometheus:
+    image: prom/prometheus:latest
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.retention.time=7d'
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=ppm_admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    restart: unless-stopped
+
+volumes:
+  ppm_data:
+  prometheus_data:
+  grafana_data:
+"""
+
