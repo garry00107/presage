@@ -51,27 +51,40 @@ Presage treats conversation as a particle moving through the embedding hypersphe
 
 **Conversation state** — an exponentially-decayed weighted sum of turn embeddings, normalized onto the unit sphere:
 
-$$C_t = \text{normalize}\left(\sum_{i=0}^{N} \lambda^{(N-i)} \cdot e_i\right)$$
+```text
+C_t = normalize( Σ [λ^(N-i) * e_i] )
+```
 
 **Momentum** — projected onto the tangent plane at $C_t$ (respects spherical geometry):
 
-$$M_{\text{tan}} = M_t - (M_t \cdot C_t)\,C_t$$
+```text
+M_tan = M_t - (M_t • C_t) * C_t
+```
 
 **Geodesic extrapolation** — moves along the great circle rather than punching through the sphere's interior:
 
-$$\hat{C}_{t+k} = \cos(\theta)\,C_t + \sin(\theta)\,\hat{M}_{\text{tan}}, \quad \theta = v \cdot k \cdot \delta$$
+```text
+C_{t+k} = cos(θ)*C_t + sin(θ)*M_tan
+where θ = velocity * k * δ
+```
 
-The predicted state $\hat{C}_{t+k}$ is used as the query vector for prefetching — always on the unit sphere, always a valid cosine similarity query.
+The predicted state `C_{t+k}` is used as the query vector for prefetching — always on the unit sphere, always a valid cosine similarity query.
 
 **Confidence** — each prediction strategy is tracked by a Bayesian Beta-Bernoulli bandit:
 
-$$P(\text{hit}) = \frac{\alpha_{\text{hits}} + 1}{\alpha_{\text{hits}} + \beta_{\text{misses}} + 2}$$
+```text
+P(hit) = (hits + 1) / (hits + misses + 2)
+```
 
 No training required. Starts calibrated (Beta(1,1) = 0.5), updates every turn.
 
 **Injection** — context allocation solved as a 0/1 knapsack over pre-chunked semantic units:
 
-$$\max \sum v_i x_i \quad \text{s.t.} \quad \sum w_i x_i \leq B, \quad x_i \in \{0, 1\}$$
+```text
+Maximize: Σ (value_i * x_i)
+Subject to: Σ (tokens_i * x_i) ≤ MAX_TOKENS
+where x_i ∈ {0, 1}
+```
 
 Content is **never truncated**. The knapsack selects whole chunks only — split at AST node, sentence, or header boundaries at write time.
 

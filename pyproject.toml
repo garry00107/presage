@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "presage"
-version = "0.1.0"
+version = "0.1.1"
 description = "Anticipatory memory for LLMs — predicts what context you'll need next and pre-stages it before you ask."
 readme = "README.md"
 license = { text = "MIT" }
