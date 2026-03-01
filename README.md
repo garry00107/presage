@@ -128,11 +128,13 @@ Content is **never truncated**. The knapsack selects whole chunks only — split
 ### Install
 
 ```bash
-git clone https://github.com/yourname/presage
-cd presage
-pip install -e ".[all]"
-cp docker/.env.example .env
-# Edit .env — add your API key
+pip install presage
+```
+
+Or with all optional backends:
+
+```bash
+pip install "presage[all]"
 ```
 
 ### Initialize

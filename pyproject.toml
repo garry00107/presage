@@ -1,40 +1,45 @@
 [build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
-name = "ppm"
+name = "presage"
 version = "0.1.0"
-description = "Predictive Push Memory — anticipatory memory brain for LLMs"
-requires-python = ">=3.12"
+description = "Anticipatory memory for LLMs — predicts what context you'll need next and pre-stages it before you ask."
 readme = "README.md"
 license = { text = "MIT" }
-
+requires-python = ">=3.12"
+authors = [
+  { name = "Gaurav", email = "gauravsulsule100@gmail.com" }
+]
+keywords = ["llm", "memory", "rag", "embeddings", "anthropic", "ai", "nvidia", "nim"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 dependencies = [
-    # Core async
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.30.0",
     "websockets>=12.0",
     "aiosqlite>=0.20.0",
     "aiofiles>=23.0.0",
-    # Storage
-    "qdrant-client==1.16.2",
+    "qdrant-client>=1.16.2",
     "kuzu>=0.3.0",
-    # Math
     "numpy>=1.26.0",
     "scipy>=1.12.0",
     "scikit-learn>=1.4.0",
-    # Settings
     "pydantic>=2.6.0",
     "pydantic-settings>=2.2.0",
-    # Observability
     "structlog>=24.0.0",
     "prometheus-client>=0.20.0",
-    # HTTP client (CLI ingest)
     "httpx>=0.27.0",
 ]
 
 [project.optional-dependencies]
+all = ["presage[anthropic,openai,local,otel]"]
 anthropic = ["anthropic>=0.25.0"]
 openai    = ["openai>=1.30.0"]
 local     = ["sentence-transformers>=2.7.0"]
@@ -43,47 +48,34 @@ otel      = [
     "opentelemetry-sdk>=1.24.0",
     "opentelemetry-exporter-otlp-proto-grpc>=1.24.0",
 ]
-all = [
-    "anthropic>=0.25.0",
-    "openai>=1.30.0",
-    "sentence-transformers>=2.7.0",
-    "opentelemetry-api>=1.24.0",
-    "opentelemetry-sdk>=1.24.0",
-    "opentelemetry-exporter-otlp-proto-grpc>=1.24.0",
-]
 dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "hypothesis>=6.100.0",
-    "httpx>=0.27.0",   # for TestClient
+    "httpx>=0.27.0",
+    "hatch"
 ]
 
 [project.scripts]
-ppm = "cli.ppm:main"
+presage = "cli.ppm:main"
 
-[tool.setuptools.packages.find]
-where = ["."]
-exclude = ["tests*", "docker*"]
+[project.urls]
+Homepage = "https://github.com/garry00107/presage"
+Repository = "https://github.com/garry00107/presage"
+Issues = "https://github.com/garry00107/presage/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = [
+    "api",
+    "cli",
+    "config",
+    "core",
+    "observability",
+    "adapters",
+    "math_core"
+]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["tests"]
 python_files = ["test_*.py"]
-python_classes = ["Test*"]
-python_functions = ["test_*"]
-filterwarnings = [
-    "ignore::DeprecationWarning",
-    "ignore::UserWarning",
-]
-
-[tool.ruff]
-line-length = 100
-target-version = "py312"
-select = ["E", "F", "I", "N", "UP", "RUF"]
-ignore = ["E501", "N803", "N806"]
-
-[tool.mypy]
-python_version = "3.12"
-ignore_missing_imports = true
-strict = false
-
