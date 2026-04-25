@@ -87,6 +87,14 @@ CREATE TABLE IF NOT EXISTS bandit_state (
     updated_at  INTEGER NOT NULL
 );
 
+-- Session state persistence
+CREATE TABLE IF NOT EXISTS session_state (
+    session_id  TEXT PRIMARY KEY,
+    turn_index  INTEGER NOT NULL,
+    state_json  TEXT NOT NULL,
+    updated_at  INTEGER NOT NULL
+);
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_memories_source ON memories(source);
 CREATE INDEX IF NOT EXISTS idx_memories_hash ON memories(content_hash);
@@ -298,5 +306,30 @@ class MetaStore:
         return {
             row["key"][len(prefix):]: {"alpha": row["alpha"], "beta": row["beta"]}
             for row in rows
+        }
+
+    # ── Session State Persistence ───────────────────────────────────────────────
+
+    async def save_session_state(self, session_id: str, turn_index: int, state_json: dict) -> None:
+        import time, json
+        await self._db.execute(
+            """INSERT OR REPLACE INTO session_state
+               (session_id, turn_index, state_json, updated_at) VALUES (?,?,?,?)""",
+            (session_id, turn_index, json.dumps(state_json), int(time.time()))
+        )
+        await self._db.commit()
+
+    async def load_session_state(self, session_id: str) -> dict | None:
+        import json
+        async with self._db.execute(
+            "SELECT turn_index, state_json FROM session_state WHERE session_id=?",
+            (session_id,)
+        ) as cur:
+            row = await cur.fetchone()
+        if not row:
+            return None
+        return {
+            "turn_index": row["turn_index"],
+            "state": json.loads(row["state_json"])
         }
 

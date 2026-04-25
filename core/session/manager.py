@@ -260,6 +260,9 @@ class SessionManager:
                 source=source,
             )
 
+            # 5. Persist Session State
+            await self.save_state()
+
             log.debug(
                 "session.post_response_complete",
                 turn=self._turn_index,
@@ -319,6 +322,18 @@ class SessionManager:
                      turns=self._turn_index)
         except Exception as e:
             log.error("session.close_error", error=str(e))
+
+    async def save_state(self) -> None:
+        """Persist session state to the meta store."""
+        try:
+            state_data = self._state.dump_state()
+            await self._meta.save_session_state(
+                session_id=self.session_id,
+                turn_index=self._turn_index,
+                state_json=state_data
+            )
+        except Exception as e:
+            log.error("session.save_state_error", error=str(e))
 
     @property
     def turn_count(self) -> int:

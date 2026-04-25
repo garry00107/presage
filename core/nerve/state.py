@@ -135,6 +135,38 @@ class ConversationStateManager:
             did_reset_last=False,
         )
 
+    def dump_state(self) -> dict:
+        """Explicitly serialize mutable state for session persistence."""
+        return {
+            "history": [vec.tolist() for vec in self._history],
+            "C_t": self._C_t.tolist() if self._C_t is not None else None,
+            "C_prev": self._C_prev.tolist() if self._C_prev is not None else None,
+            "M_hat": self._M_hat.tolist() if self._M_hat is not None else None,
+            "M_raw": self._M_raw.tolist() if self._M_raw is not None else None,
+            "velocity": self._velocity,
+            "velocity_prev": self._velocity_prev,
+            "turn_count": self._turn_count,
+            "last_intent": self._last_intent.value if self._last_intent else "UNKNOWN",
+        }
+
+    def load_state(self, data: dict) -> None:
+        """Hydrate mutable state from serialized dict."""
+        self._history = deque([np.array(v) for v in data["history"]], maxlen=settings.state_window_max)
+        self._C_t = np.array(data["C_t"]) if data.get("C_t") else None
+        self._C_prev = np.array(data["C_prev"]) if data.get("C_prev") else None
+        self._M_hat = np.array(data["M_hat"]) if data.get("M_hat") else None
+        self._M_raw = np.array(data["M_raw"]) if data.get("M_raw") else None
+        self._velocity = data.get("velocity", 0.0)
+        self._velocity_prev = data.get("velocity_prev", 0.0)
+        self._turn_count = data.get("turn_count", 0)
+        
+        intent_str = data.get("last_intent", "UNKNOWN")
+        try:
+            self._last_intent = IntentSignal(intent_str)
+        except ValueError:
+            self._last_intent = IntentSignal.UNKNOWN
+
+
     # ── Properties ─────────────────────────────────────────────────────────────
 
     @property

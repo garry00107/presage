@@ -161,8 +161,17 @@ class SessionFactory:
             meta_store=self._meta,
         )
 
+        # Hydrate session state if restoring an existing session
+        snapshot = await self._meta.load_session_state(sid)
+        if snapshot:
+            session._turn_index = snapshot["turn_index"]
+            tracker._turn_index = snapshot["turn_index"]
+            state.load_state(snapshot["state"])
+            log.info("session_factory.restored", session_id=sid, turns=snapshot["turn_index"])
+        else:
+            log.info("session_factory.created", session_id=sid)
+
         self._sessions[sid] = session
-        log.info("session_factory.created", session_id=sid)
         return session
 
     async def get_session(self, session_id: str) -> SessionManager | None:
