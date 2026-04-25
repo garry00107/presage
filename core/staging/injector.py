@@ -119,14 +119,30 @@ class Injector:
         auto  = [s for s in staged if s.tier == SlotTier.AUTO]
         hot   = [s for s in staged if s.tier == SlotTier.HOT]
 
+        log.debug(
+            "injector.select_memories",
+            total_staged=len(staged),
+            auto_count=len(auto),
+            hot_count=len(hot),
+            staged_tiers=[s.tier.value for s in staged],
+            staged_conf=[round(s.raw_confidence, 3) for s in staged],
+        )
+
         selected = list(auto)
 
         # Include HOT memories if soft trigger matches
         if soft_trigger and hot:
             triggered = self._soft_trigger_match(hot, soft_trigger)
-            selected.extend(triggered)
+            log.debug("injector.soft_trigger", triggered=len(triggered))
+            if triggered:
+                selected.extend(triggered)
+            elif len(auto) == 0:
+                # Soft trigger didn't match, but no AUTO — fall through to best HOT
+                log.debug("injector.hot_fallback", hot_count=len(hot), reason="soft_trigger_miss")
+                selected.extend(hot[:1])
         elif hot and len(auto) == 0:
             # No AUTO memories ready: fall through to best HOT memory
+            log.debug("injector.hot_fallback", hot_count=len(hot), reason="no_auto")
             selected.extend(hot[:1])
 
         # Deduplicate by combined_score, keep highest scoring per parent
@@ -135,6 +151,7 @@ class Injector:
         # Sort by combined_score
         selected.sort(key=lambda s: s.combined_score, reverse=True)
 
+        log.debug("injector.selected", count=len(selected))
         return selected
 
     def _soft_trigger_match(

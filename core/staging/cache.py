@@ -76,13 +76,14 @@ class StagingCache:
 
     async def get_auto_inject(self) -> list[StagedMemory]:
         """
-        Return all AUTO-tier (P0-P1) staged memories that are ready.
+        Return all AUTO-tier staged memories that are ready.
         Called synchronously on the hot path before LLM invocation.
         Non-blocking — returns whatever is ready NOW.
+        Searches ALL slots — tier is determined by confidence, not position.
         """
         async with self._lock:
             return [
-                sm for sm in self._slots[:2]  # P0-P1 only
+                sm for sm in self._slots
                 if sm is not None
                 and not sm.is_expired
                 and sm.tier == SlotTier.AUTO
@@ -90,14 +91,17 @@ class StagingCache:
 
     async def get_hot(self, trigger_text: str = "") -> list[StagedMemory]:
         """
-        Return HOT-tier (P2-P4) staged memories.
+        Return HOT-tier staged memories.
         Used when a soft trigger fires (e.g., user references a symbol
         that matches a staged prediction's annotation tags).
+        Searches ALL slots — tier is determined by confidence, not position.
         """
         async with self._lock:
             return [
-                sm for sm in self._slots[2:5]  # P2-P4
-                if sm is not None and not sm.is_expired
+                sm for sm in self._slots
+                if sm is not None
+                and not sm.is_expired
+                and sm.tier == SlotTier.HOT
             ]
 
     async def get_all_ready(self) -> list[StagedMemory]:

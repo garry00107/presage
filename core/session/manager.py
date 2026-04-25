@@ -161,6 +161,13 @@ class SessionManager:
 
         # Also get HOT-tier if soft trigger fires
         hot = await self._cache.get_hot(trigger_text=user_message)
+        log.debug(
+            "session.staged_retrieval",
+            auto_count=len(staged),
+            hot_count=len(hot),
+            auto_tiers=[sm.tier.value for sm in staged],
+            hot_tiers=[sm.tier.value for sm in hot],
+        )
         staged = self._deduplicate_staged(staged + hot)
 
         # Step 3: Rerank against actual message embedding

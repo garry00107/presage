@@ -110,13 +110,23 @@ async def cmd_serve(host: str = "0.0.0.0", port: int = 8000):
     set_factory(factory)
     app.state.factory = factory
 
+    # Start OutboxWorker for eventual consistency (SQLite → Qdrant)
+    from core.store.outbox_worker import OutboxWorker
+    outbox = OutboxWorker(meta_store=meta, vector_store=vector)
+    await outbox.start()
+    app.state.outbox_worker = outbox
+
     print(f"  ✓ Server starting on http://{host}:{port}")
     print(f"  ✓ API docs: http://{host}:{port}/docs")
     print(f"  ✓ WebSocket: ws://{host}:{port}/v1/ws/{{session_id}}")
+    print(f"  ✓ OutboxWorker started")
 
     config = uvicorn.Config(app, host=host, port=port, log_level="info")
     server = uvicorn.Server(config)
     await server.serve()
+
+    # Shutdown
+    await outbox.stop()
 
 
 async def cmd_chat():
