@@ -154,7 +154,8 @@ class MetaStore:
                 "UPSERT_VECTOR",
                 {"chunk_id": chunk["id"], "parent_id": mid,
                  "content": chunk["content"], "tokens": chunk["tokens"],
-                 "source_type": chunk.get("source_type", "prose")}
+                 "source_type": chunk.get("source_type", "prose"),
+                 "vector": chunk.get("embedding", [])}
             )
 
         for tag in memory.get("forward_contexts", []):
